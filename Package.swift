@@ -4,18 +4,18 @@
 import PackageDescription
 
 let package = Package(
-    name: "VWO",
+    name: "VWOSDK",
     products: [
         .library(
-            name: "VWO",
-            targets: ["VWO"]),
+            name: "VWOSDK",
+            targets: ["VWOSDK"]),
     ],
     dependencies: [
         .package(url: "https://github.com/socketio/socket.io-client-swift", "15.2.0"..<"15.2.1")
     ],
     targets: [
         .target(
-            name: "VWO",
+            name: "VWOSDK",
             dependencies: [
                 .product(name: "SocketIO", package: "socket.io-client-swift")
             ],
