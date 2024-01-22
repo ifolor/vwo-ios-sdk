@@ -116,7 +116,7 @@ static NSTimeInterval const defaultFetchCampaignsTimeout = 60;
 
 + (VWOCampaignArray *)EUCheckAndDataFetching:(NSDictionary *) jsonDict{
     NSMutableArray<VWOCampaign *> *newCampaignList = [NSMutableArray new];
-    NSLog(@"%@", [jsonDict objectForKey: ConstCampaigns] );
+    VWOLogDebug(@"%@", [jsonDict objectForKey: ConstCampaigns] );
     NSArray<NSDictionary *> *campaignArray = [jsonDict objectForKey: ConstCampaigns];
     VWOLogDebug(@"%@", campaignArray);
     VWOCampaignArray *allCampaigns = [self campaignsFromJSON:campaignArray];
