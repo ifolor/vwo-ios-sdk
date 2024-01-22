@@ -17,12 +17,12 @@
 
 void VWOLogException(NSString *format, ...) {
 #ifndef DEBUG
-    va_list argList;
-    va_start(argList, format);
-    NSString* formattedMessage = [[NSString alloc] initWithFormat: format arguments: argList];
-    va_end(argList);
-
-    [GrayLog sendMessage:formattedMessage];
+//    va_list argList;
+//    va_start(argList, format);
+//    NSString* formattedMessage = [[NSString alloc] initWithFormat: format arguments: argList];
+//    va_end(argList);
+//
+//    [GrayLog sendMessage:formattedMessage];
 #endif
 }
 
