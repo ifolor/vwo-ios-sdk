@@ -10,7 +10,9 @@
 #import <sys/utsname.h>
 #import <sys/types.h>
 #import <sys/sysctl.h>
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#endif
 
 @implementation VWODevice
 
@@ -43,9 +45,11 @@
 }
 
 + (VWOAppleDeviceType)appleDeviceType {
+#if TARGET_OS_IPHONE
     if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
         return VWOAppleDeviceTypeIPhone;
     }
+#endif
     return VWOAppleDeviceTypeIPad;
 }
 
@@ -58,19 +62,31 @@
 }
 
 + (NSString *)userName {
+#if TARGET_OS_IPHONE
     return UIDevice.currentDevice.name;
+#endif
+    return @"macOS";
 }
 
 + (NSString *)iOSVersion {
+#if TARGET_OS_IPHONE
     return UIDevice.currentDevice.systemVersion;
+#endif
+    return @"";
 }
 
 + (int)screenWidth {
+#if TARGET_OS_IPHONE
     return UIScreen.mainScreen.bounds.size.width;
+#endif
+    return 393;
 }
 
 +(int)screenHeight {
+#if TARGET_OS_IPHONE
     return UIScreen.mainScreen.bounds.size.height;
+#endif
+    return 852;
 }
 
 @end

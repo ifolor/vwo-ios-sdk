@@ -16,7 +16,9 @@
 #import "VWOURL.h"
 #import "VWODevice.h"
 #import "VWOUserDefaults.h"
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#endif
 #import "VWOConfig.h"
 #import "VWOSegmentEvaluator.h"
 
@@ -167,6 +169,7 @@ static NSString *const kUserDefaultsKey = @"vwo.09cde70ba7a94aff9d843b1b846a79a7
 }
 
 - (void)addGestureRecognizer {
+#if TARGET_OS_IPHONE
     UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longGestureRecognised:)];
     gesture.minimumPressDuration = 2;
     gesture.cancelsTouchesInView = NO;
@@ -175,14 +178,17 @@ static NSString *const kUserDefaultsKey = @"vwo.09cde70ba7a94aff9d843b1b846a79a7
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIApplication.sharedApplication.keyWindow addGestureRecognizer:gesture];
     });
+#endif
 }
 
+#if TARGET_OS_IPHONE
 - (void)longGestureRecognised:(UILongPressGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateBegan) {
         VWOLogInfo(@"Gesture recognized");
         [VWOSocketConnector launchWithAppKey:_appKey];
     }
 }
+#endif
 
 - (void)timerAction {
     [pendingURLQueue flush];
