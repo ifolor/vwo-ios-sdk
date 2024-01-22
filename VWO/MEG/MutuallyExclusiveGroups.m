@@ -16,7 +16,7 @@
 #import "VWOSegmentEvaluator.h"
 #import "VWOController.h"
 
-@implementation MutuallyExclusiveGroups
+@implementation MEGMutuallyExclusiveGroups
 
 static const BOOL IS_LOGS_SHOWN = true;
 
@@ -36,7 +36,7 @@ static const NSString *TAG = @"MutuallyExclusiveGroups";
 
 static NSString *userId;
 
-NSMutableDictionary<NSString *, Group *> *CAMPAIGN_GROUPS;
+NSMutableDictionary<NSString *, MEGGroup *> *CAMPAIGN_GROUPS;
 
 NSMutableDictionary<NSString *, NSString *> *USER_CAMPAIGN;
 
@@ -257,7 +257,7 @@ NSMutableDictionary<NSString *, NSString *> *USER_CAMPAIGN;
 
     VWOLogDebug(@"MutuallyExclusive  Normalized value for user with userID -> %@ is  %@",userId,normalizedValue);
 
-     Group *interestedGroup = CAMPAIGN_GROUPS[groupName];
+     MEGGroup *interestedGroup = CAMPAIGN_GROUPS[groupName];
 
       if (interestedGroup == nil) return nil;
     
@@ -270,7 +270,7 @@ NSMutableDictionary<NSString *, NSString *> *USER_CAMPAIGN;
         for (int i = 0; i < priorityCampaignsInGroup.count; i++) {
             NSString *priorityCampaign = priorityCampaignsInGroup[i];
             NSLog(@"now evaluating priority campaign ( p ) @ index %d -> %@", i, priorityCampaign);
-            PriorityQualificationWinnerResult *result = [self isQualifiedAsWinner:priorityCampaign isGroupPassedByUser:YES];
+            MEGPriorityQualificationWinnerResult *result = [self isQualifiedAsWinner:priorityCampaign isGroupPassedByUser:YES];
             if ([result isQualified]) {
                 NSLog(@"found a winner campaign from the priority campaign list -> %@", priorityCampaign);
                 return priorityCampaign;
@@ -282,13 +282,13 @@ NSMutableDictionary<NSString *, NSString *> *USER_CAMPAIGN;
     return [interestedGroup getCampaignForRespectiveWeight:normalizedValue];
 }
 
-- (PriorityQualificationWinnerResult *)isQualifiedAsWinner:(NSString *)priorityCampaignId isGroupPassedByUser:(BOOL)isGroupPassedByUser {
+- (MEGPriorityQualificationWinnerResult *)isQualifiedAsWinner:(NSString *)priorityCampaignId isGroupPassedByUser:(BOOL)isGroupPassedByUser {
     
     BOOL priorityIsNull = ([priorityCampaignId isEqual: @""]);
     if (priorityIsNull) {
         VWOLogDebug(@"the passed priority campaign id is null, will not qualify.");
         
-        PriorityQualificationWinnerResult *result = [[PriorityQualificationWinnerResult alloc] init];
+        MEGPriorityQualificationWinnerResult *result = [[MEGPriorityQualificationWinnerResult alloc] init];
         result.qualified = NO;
         result.groupInPriority = isGroupPassedByUser;
         result.priorityCampaignFound = NO;
@@ -301,7 +301,7 @@ NSMutableDictionary<NSString *, NSString *> *USER_CAMPAIGN;
         if (vwoData == nil || [vwoData count] == 0){
             VWOLogDebug(@"INCONSISTENT STATE detected, local data for VWO is not present.");
             
-            PriorityQualificationWinnerResult *result = [[PriorityQualificationWinnerResult alloc] init];
+            MEGPriorityQualificationWinnerResult *result = [[MEGPriorityQualificationWinnerResult alloc] init];
             result.qualified = NO;
             result.groupInPriority = isGroupPassedByUser;
             result.priorityCampaignFound = NO;
@@ -330,7 +330,7 @@ NSMutableDictionary<NSString *, NSString *> *USER_CAMPAIGN;
             
             if ([self isSegmentationValid:campaign] && [self isVariationValid:campaign] && isPriorityCampaignValid) {
                 
-                PriorityQualificationWinnerResult *result = [[PriorityQualificationWinnerResult alloc] init];
+                MEGPriorityQualificationWinnerResult *result = [[MEGPriorityQualificationWinnerResult alloc] init];
                 result.qualified = YES;
                 result.groupInPriority = isGroupPassedByUser;
                 result.priorityCampaignFound = YES;
@@ -351,13 +351,13 @@ NSMutableDictionary<NSString *, NSString *> *USER_CAMPAIGN;
         }
     }
     @catch (NSException *exception)  {
-        PriorityQualificationWinnerResult *result = [[PriorityQualificationWinnerResult alloc] init];
+        MEGPriorityQualificationWinnerResult *result = [[MEGPriorityQualificationWinnerResult alloc] init];
         result.qualified = NO;
         result.groupInPriority = isGroupPassedByUser;
         result.priorityCampaignFound = NO;
         return result;
     }
-    PriorityQualificationWinnerResult *result = [[PriorityQualificationWinnerResult alloc] init];
+    MEGPriorityQualificationWinnerResult *result = [[MEGPriorityQualificationWinnerResult alloc] init];
     result.qualified = NO;
     result.groupInPriority = isGroupPassedByUser;
     result.priorityCampaignFound = NO;
@@ -417,7 +417,7 @@ NSMutableDictionary<NSString *, NSString *> *USER_CAMPAIGN;
     NSArray *allKeys = [CAMPAIGN_GROUPS allKeys];
     
     for(NSString *key in allKeys){
-        Group *group = CAMPAIGN_GROUPS[key];
+        MEGGroup *group = CAMPAIGN_GROUPS[key];
         
         if(group == nil)return nil;
         if(groupId == group.Id){
@@ -458,7 +458,7 @@ NSMutableDictionary<NSString *, NSString *> *USER_CAMPAIGN;
     
     VWOLogDebug(@"MutuallyExclusive  Normalized value for user with userID [%@] -> [%@]",userId,normalizedValue);
 
-    Group *interestedGroup = CAMPAIGN_GROUPS[campaignFoundInGroup];
+    MEGGroup *interestedGroup = CAMPAIGN_GROUPS[campaignFoundInGroup];
 
     
     if (interestedGroup == nil) return nil; // basic null check because NSDictionary is being used
@@ -471,7 +471,7 @@ NSMutableDictionary<NSString *, NSString *> *USER_CAMPAIGN;
 
         // evaluate priority campaigns
         // here the campaign is the priorityCampaign because we are targeting the specific campaign
-        PriorityQualificationWinnerResult *result = [self isQualifiedAsWinner:campaign isGroupPassedByUser:NO];
+        MEGPriorityQualificationWinnerResult *result = [self isQualifiedAsWinner:campaign isGroupPassedByUser:NO];
         if ([result isQualified]) {
             VWOLogDebug(@"winner campaign found from the priority campaign list -> %@", campaign);
             return campaign;
@@ -513,7 +513,7 @@ NSMutableDictionary<NSString *, NSString *> *USER_CAMPAIGN;
 
     for (NSString *key in allKeys) {
 
-        Group *group = CAMPAIGN_GROUPS[key];
+        MEGGroup *group = CAMPAIGN_GROUPS[key];
 
         if (group == nil) return nil;
 
@@ -554,7 +554,7 @@ NSMutableDictionary<NSString *, NSString *> *USER_CAMPAIGN;
 
 
 - (NSNumber *)getMurMurHash: (NSString *)userId{
-    int hash = abs([MurmurHash hash32:userId]);
+    int hash = abs([MEGMurmurHash hash32:userId]);
 
     return [NSNumber numberWithInt:hash];
 

@@ -7,7 +7,7 @@
 
 #import "Weight.h"
 
-@interface Weight ()
+@interface MEGWeight ()
 
 // Private instance variable
 @property (nonatomic, strong) NSString *campaign;
@@ -15,7 +15,7 @@
 
 @end
 
-@implementation Weight
+@implementation MEGWeight
 
 - (instancetype)init:(NSString *)UserId range:(NSArray<NSNumber *> *)range
 {

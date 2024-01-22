@@ -9,13 +9,13 @@
 #import "Mapping.h"
 #import "Pair.h"
 
-@interface Winner : NSObject
+@interface MEGWinner : NSObject
 
 @property (nonatomic, copy) NSString *user;
 
-- (Winner *)fromJSONObject:(NSDictionary *)jsonObject;
-- (void)addMapping:(Mapping *)mapping;
+- (MEGWinner *)fromJSONObject:(NSDictionary *)jsonObject;
+- (void)addMapping:(MEGMapping *)mapping;
 - (NSDictionary *)getJSONObject;
-- (Pair *)getRemarkForUserArgs:(Mapping *)mapping args:(NSDictionary<NSString *, NSString *> *)args;
+- (MEGPair *)getRemarkForUserArgs:(MEGMapping *)mapping args:(NSDictionary<NSString *, NSString *> *)args;
 
 @end

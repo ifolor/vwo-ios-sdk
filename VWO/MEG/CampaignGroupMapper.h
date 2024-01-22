@@ -11,14 +11,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CampaignGroupMapper : NSObject
+@interface MEGCampaignGroupMapper : NSObject
 
 + (NSDictionary *)getCampaignGroups: (NSDictionary *)jsonObject;
 + (NSDictionary *)createAndGetGroups: (NSDictionary *)jsonObject;
-+ (void)preparePriority: (NSDictionary *)source destination:(Group *)destination;
-+ (void)prepareEt:(NSDictionary *)source destination:(Group *)destination;
-+ (void)prepareCampaigns:(NSDictionary *)source destination:(Group *)destination;
-+ (void)prepareWeight:(NSDictionary *)source destination:(Group *)destination;
++ (void)preparePriority: (NSDictionary *)source destination:(MEGGroup *)destination;
++ (void)prepareEt:(NSDictionary *)source destination:(MEGGroup *)destination;
++ (void)prepareCampaigns:(NSDictionary *)source destination:(MEGGroup *)destination;
++ (void)prepareWeight:(NSDictionary *)source destination:(MEGGroup *)destination;
 + (NSDictionary *)getGroups: (NSDictionary *)jsonObject;
 
 @end

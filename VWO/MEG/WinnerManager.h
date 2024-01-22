@@ -9,9 +9,9 @@
 
 #import "Response.h"
 
-@interface WinnerManager : NSObject
+@interface MEGWinnerManager : NSObject
 
-- (Response *)getSavedDetailsFor:(NSString *)userId args:(NSDictionary<NSString *,NSString *> *)args;
+- (MEGResponse *)getSavedDetailsFor:(NSString *)userId args:(NSDictionary<NSString *,NSString *> *)args;
 - (BOOL)save:(NSString *)userId winnerCampaign:(NSString *)winnerCampaign args:(NSDictionary<NSString *, NSString *> *)args;
 
 @end

@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface PriorityQualificationWinnerResult : NSObject
+@interface MEGPriorityQualificationWinnerResult : NSObject
 
 - (BOOL)isGroupInPriority;
 - (BOOL)isPriorityCampaignFound;

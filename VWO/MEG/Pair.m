@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "Pair.h"
 
-@implementation Pair
+@implementation MEGPair
 
 - (instancetype)initWithFirst:(NSNumber *)first second:(id)second {
     self = [super init];

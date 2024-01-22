@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Group : NSObject
+@interface MEGGroup : NSObject
 
 
 @property(nonatomic,assign)int Id;

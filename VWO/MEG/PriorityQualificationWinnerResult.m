@@ -7,7 +7,7 @@
 
 #import "PriorityQualificationWinnerResult.h"
 
-@interface PriorityQualificationWinnerResult ()
+@interface MEGPriorityQualificationWinnerResult ()
 
 // Private instance variable
 
@@ -30,7 +30,7 @@
 
 @end
 
-@implementation PriorityQualificationWinnerResult
+@implementation MEGPriorityQualificationWinnerResult
 
 
 - (BOOL)isGroupInPriority {

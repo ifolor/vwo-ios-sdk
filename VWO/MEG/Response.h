@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Response : NSObject
+@interface MEGResponse : NSObject
 
 @property (nonatomic, assign) BOOL shouldServePreviousWinnerCampaign;
 @property (nonatomic, assign) BOOL isNewUser;

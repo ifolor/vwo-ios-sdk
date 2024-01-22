@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Weight : NSObject
+@interface MEGWeight : NSObject
 
 - (instancetype)init:(NSString *)UserId range:(NSArray<NSNumber *> *)range;
 - (NSString *)getCampaign;

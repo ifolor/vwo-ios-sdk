@@ -11,7 +11,7 @@
 #import "CampaignUniquenessTracker.h"
 #import "MutuallyExclusiveGroups.h"
 
-@interface Group ()
+@interface MEGGroup ()
 
 // Private instance variable
 @property (nonatomic, strong) NSMutableArray<NSString *> *priorityCampaigns;
@@ -26,11 +26,11 @@
 @property (nonatomic,assign) int et;
 
 // Using NSMutableArray to maintain the insertion order
-@property (nonatomic, strong) NSMutableArray<Weight *> *weightMapFromServer;
+@property (nonatomic, strong) NSMutableArray<MEGWeight *> *weightMapFromServer;
 
 @end
 
-@implementation Group
+@implementation MEGGroup
 
 const int VALUE_ET_INVALID = -1;
 const int VALUE_ET_RANDOM = 1;
@@ -44,7 +44,7 @@ NSString *VALUE_INVALID_PRIORITY_CAMPAIGN = @"InvalidCampaign";
         // Initialize private properties
         _priorityCampaigns = [[NSMutableArray<NSString *> alloc] init];
         _et= VALUE_ET_INVALID;
-        _weightMapFromServer = [[NSMutableArray<Weight *> alloc] init];
+        _weightMapFromServer = [[NSMutableArray<MEGWeight *> alloc] init];
     }
     return self;
 }
@@ -90,31 +90,31 @@ NSString *VALUE_INVALID_PRIORITY_CAMPAIGN = @"InvalidCampaign";
 }
 
 - (NSString *)getPriorityCampaign {
-    [MutuallyExclusiveGroups log:[NSString stringWithFormat:@"will try to check for priority campaign against campaign list in group -> %@", self.name]];
+    [MEGMutuallyExclusiveGroups log:[NSString stringWithFormat:@"will try to check for priority campaign against campaign list in group -> %@", self.name]];
 
     // check if et is advance as priority is not
     if ([self isNotAdvanceMEGAllocation]) {
-    [MutuallyExclusiveGroups log:[NSString stringWithFormat:@"et ( %d ) is not advance type, priority campaigns ( p ) will not be applicable.", self.et]];
+    [MEGMutuallyExclusiveGroups log:[NSString stringWithFormat:@"et ( %d ) is not advance type, priority campaigns ( p ) will not be applicable.", self.et]];
     return VALUE_INVALID_PRIORITY_CAMPAIGN;
     }
 
     if (self.priorityCampaigns.count == 0) {
-    [MutuallyExclusiveGroups log:@"et is advance but the priority array is empty."];
+    [MEGMutuallyExclusiveGroups log:@"et is advance but the priority array is empty."];
     return VALUE_INVALID_PRIORITY_CAMPAIGN;
     }
 
-    [MutuallyExclusiveGroups log:[NSString stringWithFormat:@"there are %lu priorityCampaigns in %@", (unsigned long)self.priorityCampaigns.count, self.name]];
+    [MEGMutuallyExclusiveGroups log:[NSString stringWithFormat:@"there are %lu priorityCampaigns in %@", (unsigned long)self.priorityCampaigns.count, self.name]];
 
     for (NSString *priorityCampaign in self.priorityCampaigns) {
     if ([self.campaignList containsObject:priorityCampaign]) {
-    [MutuallyExclusiveGroups log:[NSString stringWithFormat:@"priority campaign >> %@ << found in -> %@", priorityCampaign, self.name]];
+    [MEGMutuallyExclusiveGroups log:[NSString stringWithFormat:@"priority campaign >> %@ << found in -> %@", priorityCampaign, self.name]];
     return priorityCampaign;
     } else {
-    [MutuallyExclusiveGroups log:[NSString stringWithFormat:@"priority campaign >> %@ << doesn't exist in %@", priorityCampaign, self.name]];
+    [MEGMutuallyExclusiveGroups log:[NSString stringWithFormat:@"priority campaign >> %@ << doesn't exist in %@", priorityCampaign, self.name]];
     }
     }
 
-    [MutuallyExclusiveGroups log:@"priority campaign not defined, caller should continue with normal MEG logic."];
+    [MEGMutuallyExclusiveGroups log:@"priority campaign not defined, caller should continue with normal MEG logic."];
 
     // we found nothing
     return VALUE_INVALID_PRIORITY_CAMPAIGN;
@@ -137,9 +137,9 @@ NSString *VALUE_INVALID_PRIORITY_CAMPAIGN = @"InvalidCampaign";
 
 
 - (void) addCampaign: (NSString *) campaign {
-    CampaignUniquenessTracker *campaignUniquenessTracker = [[CampaignUniquenessTracker alloc] init];
+    MEGCampaignUniquenessTracker *campaignUniquenessTracker = [[MEGCampaignUniquenessTracker alloc] init];
       if([campaignUniquenessTracker groupContainsCampaign:campaign]) {
-          [MutuallyExclusiveGroups log: [NSString stringWithFormat:@"%s/%@/%s/%@/%s/%@/%s", "addCampaign: could not add campaign [ ", campaign, " ] to group [ ", self.name," ] because it already belongs to group [ ", [campaignUniquenessTracker getNameOfGroupFor:campaign]," ]"]];
+          [MEGMutuallyExclusiveGroups log: [NSString stringWithFormat:@"%s/%@/%s/%@/%s/%@/%s", "addCampaign: could not add campaign [ ", campaign, " ] to group [ ", self.name," ] because it already belongs to group [ ", [campaignUniquenessTracker getNameOfGroupFor:campaign]," ]"]];
 
         return;
 
@@ -254,7 +254,7 @@ NSString *VALUE_INVALID_PRIORITY_CAMPAIGN = @"InvalidCampaign";
 
         if(weightIsGreaterThanMin && weightIsLessThanMax) {
 
-            [MutuallyExclusiveGroups log:[NSString stringWithFormat:@"%s/%@/%s/%@/%s/%@/%s", "campaign [ " ,key ," ] found for the given weight [ " ,weight ," ] in group [ " ,[self getNameOnlyIfPresent: key] ," ]"]];
+            [MEGMutuallyExclusiveGroups log:[NSString stringWithFormat:@"%s/%@/%s/%@/%s/%@/%s", "campaign [ " ,key ," ] found for the given weight [ " ,weight ," ] in group [ " ,[self getNameOnlyIfPresent: key] ," ]"]];
 
             return key;
 
@@ -270,11 +270,11 @@ NSString *VALUE_INVALID_PRIORITY_CAMPAIGN = @"InvalidCampaign";
 
 - (void)createWeightMap {
     if ([self isNotAdvanceMEGAllocation]) {
-        [MutuallyExclusiveGroups log:[NSString stringWithFormat:@"not using weight from the server, preparing EQUAL allocation because et = %d [ NOTE: et=1->Random, et=2 -> Advance ]", self.et]];
+        [MEGMutuallyExclusiveGroups log:[NSString stringWithFormat:@"not using weight from the server, preparing EQUAL allocation because et = %d [ NOTE: et=1->Random, et=2 -> Advance ]", self.et]];
         
         [self createEquallyDistributedWeightMap];
     } else {
-        [MutuallyExclusiveGroups log:@"weight is received from the server, preparing WEIGHTED allocation."];
+        [MEGMutuallyExclusiveGroups log:@"weight is received from the server, preparing WEIGHTED allocation."];
         [self createWeightMapFromProvidedValues];
     }
 }
@@ -284,9 +284,9 @@ NSString *VALUE_INVALID_PRIORITY_CAMPAIGN = @"InvalidCampaign";
         self.weightMap = [[NSMutableDictionary alloc] init];
     }
     
-    [MutuallyExclusiveGroups log:@"morphing weighted allocation data to existing MEG weight format"];
+    [MEGMutuallyExclusiveGroups log:@"morphing weighted allocation data to existing MEG weight format"];
     for (int index = 0; index < [self.weightMapFromServer count]; index++) {
-        Weight *weight = self.weightMapFromServer[index];
+        MEGWeight *weight = self.weightMapFromServer[index];
         [self.weightMap setObject:weight.getRange forKey:weight.getCampaign];
     }
 }
@@ -335,14 +335,14 @@ NSString *VALUE_INVALID_PRIORITY_CAMPAIGN = @"InvalidCampaign";
         [weightRange addObject:@(weight)]; // end
     } else {
         // last weight's end will be this weight's start
-        Weight *lastWeight = self.weightMapFromServer.lastObject;
+        MEGWeight *lastWeight = self.weightMapFromServer.lastObject;
         // add range
         [weightRange addObject: ([lastWeight getRangeEnd])]; // start will be the end of last entry
         NSInteger endWeight = [[lastWeight getRangeEnd] intValue] + weight;
         [weightRange addObject: [NSNumber numberWithInteger:endWeight]]; // end will be start + current weight
     }
 
-    Weight *weightObject = [[Weight alloc] init:campaign range:weightRange];
+    MEGWeight *weightObject = [[MEGWeight alloc] init:campaign range:weightRange];
     [self.weightMapFromServer addObject:weightObject];
     NSLog(@"campaign %@ range %@ to %@", [weightObject getCampaign], [weightObject getRangeStart], [weightObject getRangeEnd]);
 }

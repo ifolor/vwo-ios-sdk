@@ -8,7 +8,7 @@
 
 #import "MurmurHash.h"
 
-@implementation MurmurHash
+@implementation MEGMurmurHash
 
     /** Generates 32 bit hash from byte array of the given length and
      * seed.

@@ -8,7 +8,7 @@
 
 #import "CampaignUniquenessTracker.h"
 
-@implementation CampaignUniquenessTracker
+@implementation MEGCampaignUniquenessTracker
 
 -(id) init
 {

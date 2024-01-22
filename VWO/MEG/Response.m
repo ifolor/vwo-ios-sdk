@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "Response.h"
 
-@implementation Response
+@implementation MEGResponse
 - (void)setShouldServePreviousWinnerCampaign:(BOOL)shouldServePreviousWinnerCampaign {
     _shouldServePreviousWinnerCampaign = shouldServePreviousWinnerCampaign;
 }

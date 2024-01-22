@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MurmurHash : NSObject
+@interface MEGMurmurHash : NSObject
 
 +(int)hash32:(NSString *) text;
 @end

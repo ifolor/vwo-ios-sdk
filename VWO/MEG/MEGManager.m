@@ -23,7 +23,7 @@
 
 - (instancetype)init{
     if (self = [super init]) {
-        self.winnerManager = [[WinnerManager alloc] init];
+        self.winnerManager = [[MEGWinnerManager alloc] init];
     }
     return self;
 }
@@ -61,17 +61,17 @@
         }
     }
     
-    WinnerManager *winnerManager = [[WinnerManager alloc] init];
-    Response *localResponse = [winnerManager getSavedDetailsFor:userId args:args];
+    MEGWinnerManager *winnerManager = [[MEGWinnerManager alloc] init];
+    MEGResponse *localResponse = [winnerManager getSavedDetailsFor:userId args:args];
     if ([localResponse shouldServePreviousWinnerCampaign]) {
         // user doesn't exist, should continue processing
         NSString *savedWinnerCampaign = [localResponse winnerCampaign];
         return savedWinnerCampaign;
     }
     
-    NSDictionary<NSString *, Group*> *mappedData = [CampaignGroupMapper createAndGetGroups: megGroupsData];
+    NSDictionary<NSString *, MEGGroup*> *mappedData = [MEGCampaignGroupMapper createAndGetGroups: megGroupsData];
     
-    MutuallyExclusiveGroups *meg = [[MutuallyExclusiveGroups alloc] initMutuallyExclusiveGroups:userId];
+    MEGMutuallyExclusiveGroups *meg = [[MEGMutuallyExclusiveGroups alloc] initMutuallyExclusiveGroups:userId];
     [meg addGroups:mappedData];
     
     NSString *winner = [meg getCampaign:args jsonData:campaignsData];

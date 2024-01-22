@@ -9,7 +9,7 @@
 #import "Mapping.h"
 #import "VWOConstants.h"
 
-@implementation Mapping
+@implementation MEGMapping
 
 - (void)setGroup:(NSString *)group {
     _group = group;
@@ -23,7 +23,7 @@
     _winnerCampaign = winnerCampaign;
 }
 
-- (BOOL)isSameAs:(Mapping *)mapping {
+- (BOOL)isSameAs:(MEGMapping *)mapping {
     if(_group != mapping.group){
         return false;
     }

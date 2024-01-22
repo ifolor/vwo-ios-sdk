@@ -6,7 +6,7 @@
 //
 #import <Foundation/Foundation.h>
 
-@interface Mapping : NSObject
+@interface MEGMapping : NSObject
 
 @property(nonatomic, assign)NSString *group;
 @property(nonatomic, assign)NSString *testKey;
@@ -16,6 +16,6 @@
 - (void)setTestKey:(NSString *)testKey;
 - (void)setWinnerCampaign:(NSString *)winnerCampaign;
 - (NSDictionary *)getAsJson;
-- (BOOL)isSameAs:(Mapping *)mapping;
+- (BOOL)isSameAs:(MEGMapping *)mapping;
 
 @end

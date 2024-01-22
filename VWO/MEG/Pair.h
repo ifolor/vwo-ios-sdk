@@ -14,7 +14,7 @@ typedef NS_ENUM(NSInteger, LocalUserSearchRemark) {
     ShouldReturnWinnerCampaign
 };
 
-@interface Pair : NSObject
+@interface MEGPair : NSObject
 
 @property (nonatomic, strong) NSNumber *first;
 @property (nonatomic, strong) id second;

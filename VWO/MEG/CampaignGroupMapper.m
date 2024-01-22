@@ -11,7 +11,7 @@
 #import "VWOCampaign.h"
 #import "Group.h"
 
-@implementation CampaignGroupMapper
+@implementation MEGCampaignGroupMapper
 
 static NSString * const KEY_CAMPAIGN_GROUPS = @"campaignGroups";
 static NSString * const KEY_GROUPS = @"groups";
@@ -40,7 +40,7 @@ float m = 1.0;
 
 
 + (NSDictionary *)createAndGetGroups: (NSDictionary *)jsonObject{
-    NSMutableDictionary<NSString*, Group*> *groups = [NSMutableDictionary new];
+    NSMutableDictionary<NSString*, MEGGroup*> *groups = [NSMutableDictionary new];
     @try{
         NSDictionary *jsonGroups = [self getGroups:jsonObject];
         
@@ -55,7 +55,7 @@ float m = 1.0;
             
             NSString *groupName = objGroup[KEY_NAME];
             
-            Group *group = [[Group alloc]init];
+            MEGGroup *group = [[MEGGroup alloc]init];
             group.name = groupName;
             group.Id = key.intValue;
             
@@ -78,7 +78,7 @@ float m = 1.0;
     return groups;
 }
 
-+ (void)preparePriority: (NSDictionary *)source destination:(Group *)destination {
++ (void)preparePriority: (NSDictionary *)source destination:(MEGGroup *)destination {
     if (![source objectForKey:KEY_PRIORITY]) return;
 
     NSArray *priority = [source objectForKey:KEY_PRIORITY];
@@ -88,14 +88,14 @@ float m = 1.0;
     }
 }
 
-+ (void)prepareEt:(NSDictionary *)source destination:(Group *)destination {
++ (void)prepareEt:(NSDictionary *)source destination:(MEGGroup *)destination {
     if (![source objectForKey:KEY_ET]) return;
 
     int et = [[source objectForKey:KEY_ET] intValue];
     [destination addEt:et];
 }
 
-+ (void)prepareCampaigns:(NSDictionary *)source destination:(Group *)destination {
++ (void)prepareCampaigns:(NSDictionary *)source destination:(MEGGroup *)destination {
     if (![source objectForKey:KEY_CAMPAIGNS]) return;
 
     NSArray *arrCampaigns = [source objectForKey:KEY_CAMPAIGNS];
@@ -104,7 +104,7 @@ float m = 1.0;
     }
 }
 
-+ (void)prepareWeight:(NSDictionary *)source destination:(Group *)destination {
++ (void)prepareWeight:(NSDictionary *)source destination:(MEGGroup *)destination {
     if (![source objectForKey:KEY_WEIGHT]) return;
 
     NSLog(@"------------------------------------------------------------");

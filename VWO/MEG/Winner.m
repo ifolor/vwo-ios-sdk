@@ -12,10 +12,10 @@
 #import "Mapping.h"
 #import "VWOLogger.h"
 
-@implementation Winner
+@implementation MEGWinner
 NSString *user;
 
-NSMutableArray<Mapping *> *mappings;
+NSMutableArray<MEGMapping *> *mappings;
 
 - (instancetype)init
 {
@@ -27,8 +27,8 @@ NSMutableArray<Mapping *> *mappings;
     return self;
 }
 
-- (Winner *)fromJSONObject:(NSDictionary *)jsonObject {
-    Winner *winner = [[Winner alloc] init];
+- (MEGWinner *)fromJSONObject:(NSDictionary *)jsonObject {
+    MEGWinner *winner = [[MEGWinner alloc] init];
     
     @try {
         winner.user = [jsonObject objectForKey:KEY_USER];
@@ -39,7 +39,7 @@ NSMutableArray<Mapping *> *mappings;
         for (int i = 0; i < jMappingSize; i++) {
             NSDictionary *jMapping = [jMappings objectAtIndex:i];
             
-            Mapping *_mapping = [[Mapping alloc] init];
+            MEGMapping *_mapping = [[MEGMapping alloc] init];
             _mapping.testKey = [jMapping objectForKey:KEY_TEST_KEY];
             _mapping.group = [jMapping objectForKey:KEY_GROUP];
             _mapping.winnerCampaign = [jMapping objectForKey:KEY_WINNER_CAMPAIGN];
@@ -58,11 +58,11 @@ NSMutableArray<Mapping *> *mappings;
     _user = user;
 }
 
-- (void)addMapping:(Mapping *)mapping {
+- (void)addMapping:(MEGMapping *)mapping {
     NSLog(@"%@", [mapping getAsJson]);
 
     BOOL found = NO;
-    for (Mapping *m in mappings) {
+    for (MEGMapping *m in mappings) {
         if ([m isSameAs:mapping]) {
             found = YES;
             break;
@@ -81,7 +81,7 @@ NSMutableArray<Mapping *> *mappings;
     }
     
     NSMutableArray *mappingArray = [NSMutableArray new];
-    for (Mapping *mapping in mappings) {
+    for (MEGMapping *mapping in mappings) {
         NSDictionary *mappingJson = [mapping getAsJson];
         if (mappingJson != nil) {
             [mappingArray addObject:mappingJson];
@@ -95,7 +95,7 @@ NSMutableArray<Mapping *> *mappings;
     return json;
 }
 
-- (Pair *)getRemarkForUserArgs:(Mapping *)mapping args:(NSDictionary<NSString *, NSString *> *)args {
+- (MEGPair *)getRemarkForUserArgs:(MEGMapping *)mapping args:(NSDictionary<NSString *, NSString *> *)args {
 
     NSString *nonConstID_GROUP = [ID_GROUP copy];
     NSString *nonConstKEY_TEST_KEY = [KEY_TEST_KEY copy];
@@ -111,12 +111,12 @@ NSMutableArray<Mapping *> *mappings;
     if (!isGroupIdPresent && !isTestKeyPresent) {
         // there's no point in evaluating the stored values if both are null
         // as this is a user error
-        return [[Pair alloc] initWithFirst:@(NotFoundForPassedArgs) second:@""];
+        return [[MEGPair alloc] initWithFirst:@(NotFoundForPassedArgs) second:@""];
     }
 
     NSString *empty = @"";
 
-    for (Mapping *m in mappings) {
+    for (MEGMapping *m in mappings) {
 
         // because "" = null for mappings
         NSString *group = [empty isEqualToString:[m group]] ? nil : [m group];
@@ -127,18 +127,18 @@ NSMutableArray<Mapping *> *mappings;
         if (isGroupIdPresent && isGroupSame) {
             // cond 1. if { groupId } is PRESENT then there is no need to check for the { test_key }
             if ([empty isEqualToString:[m winnerCampaign]]) {
-                return [[Pair alloc] initWithFirst:@(ShouldReturnNull) second:@""];
+                return [[MEGPair alloc] initWithFirst:@(ShouldReturnNull) second:@""];
             }
-            return [[Pair alloc] initWithFirst:@(ShouldReturnWinnerCampaign) second:[m winnerCampaign]];
+            return [[MEGPair alloc] initWithFirst:@(ShouldReturnWinnerCampaign) second:[m winnerCampaign]];
         } else if (!isGroupIdPresent && isTestKeySame) {
             // cond 2. if { groupId } is NOT PRESENT then then check for the { test_key }
             if ([empty isEqualToString:[m testKey]]) {
-                return [[Pair alloc] initWithFirst:@(ShouldReturnNull) second:@""];
+                return [[MEGPair alloc] initWithFirst:@(ShouldReturnNull) second:@""];
             }
-            return [[Pair alloc] initWithFirst:@(ShouldReturnWinnerCampaign) second:[m winnerCampaign]];
+            return [[MEGPair alloc] initWithFirst:@(ShouldReturnWinnerCampaign) second:[m winnerCampaign]];
         }
     }
-    return [[Pair alloc] initWithFirst:@(NotFoundForPassedArgs) second:@""];
+    return [[MEGPair alloc] initWithFirst:@(NotFoundForPassedArgs) second:@""];
 }
 
 @end

@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MutuallyExclusiveGroups : NSObject {
+@interface MEGMutuallyExclusiveGroups : NSObject {
     
 }
 
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)getTestKeyFromCampaignId: (NSString *)campaignId campaignsData: (NSArray *)campaignsData;
 - (NSString *)getCampaignFromSpecificGroup: (NSString *)groupName;
 - (NSString *)getGroupNameFromGroupId: (int)groupId;
-- (PriorityQualificationWinnerResult *)isQualifiedAsWinner:(NSString *)priorityCampaignId isGroupPassedByUser:(BOOL)isGroupPassedByUser;
+- (MEGPriorityQualificationWinnerResult *)isQualifiedAsWinner:(NSString *)priorityCampaignId isGroupPassedByUser:(BOOL)isGroupPassedByUser;
 - (NSString *)getCampaignFromCampaignId: (NSString *)userId campaign: (NSString *)campaign;
 - (NSString *)getCampaignIfPresent: (NSString *)campaignKey;
 - (NSNumber *)getNormalizedValue: (NSNumber *)murmurHash;

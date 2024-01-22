@@ -14,7 +14,7 @@
 #import "VWOUserDefaults.h"
 #import "VWOConstants.h"
 
-@implementation WinnerManager
+@implementation MEGWinnerManager
 
 static NSString *const KEY_SAVED_ARRAY_OF_WINNER_CAMPAIGNS = @"winner_mappings";
 
@@ -22,19 +22,19 @@ static NSString *const KEY_SAVED_ARRAY_OF_WINNER_CAMPAIGNS = @"winner_mappings";
     return (root.count == 0);
 }
 
-- (Response *)getSavedDetailsFor:(NSString *)userId args:(NSDictionary<NSString *,NSString *> *)args {
+- (MEGResponse *)getSavedDetailsFor:(NSString *)userId args:(NSDictionary<NSString *,NSString *> *)args {
     @try {
         // check if this user is present locally
         NSString *previousWinnerLocalData = [VWOUserDefaults objectForKey:KEY_SAVED_ARRAY_OF_WINNER_CAMPAIGNS];
         NSInteger userIndex = [self getIndexIfUserExist:userId previousWinnerLocalData:previousWinnerLocalData];
         if (userIndex == -1) {
-            Response *response = [[Response alloc] init];
+            MEGResponse *response = [[MEGResponse alloc] init];
             response.newUser = YES;
             return response;
         }
         NSArray *root = [NSJSONSerialization JSONObjectWithData:[previousWinnerLocalData dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
         NSDictionary *user = [root objectAtIndex:userIndex];
-        Winner *winner = [[[Winner alloc] init] fromJSONObject:user];
+        MEGWinner *winner = [[[MEGWinner alloc] init] fromJSONObject:user];
 
         // prepare groupId and test_key
         NSString *nonConstID_GROUP = [ID_GROUP copy];
@@ -47,18 +47,18 @@ static NSString *const KEY_SAVED_ARRAY_OF_WINNER_CAMPAIGNS = @"winner_mappings";
             testKey = [args objectForKey:nonConstKEY_TEST_KEY];
         }
 
-        Mapping *mapping = [self prepareWinnerMappingUsing:groupId testKey:testKey winnerCampaign:nil];
-        Pair *remarkWithResult = [winner getRemarkForUserArgs:mapping args:args];
+        MEGMapping *mapping = [self prepareWinnerMappingUsing:groupId testKey:testKey winnerCampaign:nil];
+        MEGPair *remarkWithResult = [winner getRemarkForUserArgs:mapping args:args];
 
         LocalUserSearchRemark remark = remarkWithResult.first.integerValue;
         if (remark == ShouldReturnWinnerCampaign) {
-            Response *response = [[Response alloc] init];
+            MEGResponse *response = [[MEGResponse alloc] init];
             response.newUser = NO;
             response.shouldServePreviousWinnerCampaign = YES;
             response.winnerCampaign = (NSString *)remarkWithResult.second;
             return response;
         } else if (remark == ShouldReturnNull) {
-            Response *response = [[Response alloc] init];
+            MEGResponse *response = [[MEGResponse alloc] init];
             response.newUser = NO;
             response.shouldServePreviousWinnerCampaign = YES;
             response.winnerCampaign = nil;
@@ -67,7 +67,7 @@ static NSString *const KEY_SAVED_ARRAY_OF_WINNER_CAMPAIGNS = @"winner_mappings";
             // treat this block as -> (Winner_LocalUserSearchRemark_NOT_FOUND_FOR_PASSED_ARGS)
             // we did not find anything related to the provided args
             // we should treat this like a new user and MEG should be applied.
-            Response *response = [[Response alloc] init];
+            MEGResponse *response = [[MEGResponse alloc] init];
             response.newUser = YES;
             response.shouldServePreviousWinnerCampaign = NO;
             response.winnerCampaign = nil;
@@ -112,7 +112,7 @@ static NSString *const KEY_SAVED_ARRAY_OF_WINNER_CAMPAIGNS = @"winner_mappings";
     }
     
     if ([root count] == 0) {
-        Winner *firstWinner = [self prepareWinnerUsing:userId winnerCampaign:winnerCampaign groupId:groupId testKey:testKey];
+        MEGWinner *firstWinner = [self prepareWinnerUsing:userId winnerCampaign:winnerCampaign groupId:groupId testKey:testKey];
         [root addObject:[firstWinner getJSONObject]];
         [self storeLocally:root];
         return;
@@ -121,7 +121,7 @@ static NSString *const KEY_SAVED_ARRAY_OF_WINNER_CAMPAIGNS = @"winner_mappings";
     NSInteger index = [self getIndexIfUserExist:userId previousWinnerLocalData:previousWinnerLocalData];
     if (index == -1) {
         // this user didn't exist treat as new
-        Winner *firstWinner = [self prepareWinnerUsing:userId winnerCampaign:winnerCampaign groupId:groupId testKey:testKey];
+        MEGWinner *firstWinner = [self prepareWinnerUsing:userId winnerCampaign:winnerCampaign groupId:groupId testKey:testKey];
         [root addObject:[firstWinner getJSONObject]];
         [self storeLocally:root];
         return;
@@ -129,10 +129,10 @@ static NSString *const KEY_SAVED_ARRAY_OF_WINNER_CAMPAIGNS = @"winner_mappings";
     
     // existing user exist at index simply update that index
     NSDictionary *current = [root objectAtIndex:index];
-    Winner *currentWinner = [[[Winner alloc] init] fromJSONObject:current];
+    MEGWinner *currentWinner = [[[MEGWinner alloc] init] fromJSONObject:current];
     
     // try to add new values if it doesn't already exist
-    Mapping *mapping = [self prepareWinnerMappingUsing:groupId testKey:testKey winnerCampaign:winnerCampaign];
+    MEGMapping *mapping = [self prepareWinnerMappingUsing:groupId testKey:testKey winnerCampaign:winnerCampaign];
     [currentWinner addMapping:mapping];
     
     // replace with new value just in case
@@ -165,18 +165,18 @@ static NSString *const KEY_SAVED_ARRAY_OF_WINNER_CAMPAIGNS = @"winner_mappings";
     return index;
 }
 
-- (Winner *)prepareWinnerUsing:(NSString *)userId winnerCampaign:(NSString *)winnerCampaign groupId:(NSString *)groupId testKey:(NSString *)testKey {
-    Winner *winner = [[Winner alloc] init];
+- (MEGWinner *)prepareWinnerUsing:(NSString *)userId winnerCampaign:(NSString *)winnerCampaign groupId:(NSString *)groupId testKey:(NSString *)testKey {
+    MEGWinner *winner = [[MEGWinner alloc] init];
     [winner setUser:userId];
 
-    Mapping *mapping = [self prepareWinnerMappingUsing:groupId testKey:testKey winnerCampaign:winnerCampaign];
+    MEGMapping *mapping = [self prepareWinnerMappingUsing:groupId testKey:testKey winnerCampaign:winnerCampaign];
     [winner addMapping:mapping];
 
     return winner;
 }
 
-- (Mapping *)prepareWinnerMappingUsing:(NSString *)groupId testKey:(NSString *)testKey winnerCampaign:(NSString *)winnerCampaign {
-    Mapping *mapping = [[Mapping alloc] init];
+- (MEGMapping *)prepareWinnerMappingUsing:(NSString *)groupId testKey:(NSString *)testKey winnerCampaign:(NSString *)winnerCampaign {
+    MEGMapping *mapping = [[MEGMapping alloc] init];
     [mapping setGroup:groupId];
     [mapping setTestKey:testKey];
     [mapping setWinnerCampaign:winnerCampaign];
