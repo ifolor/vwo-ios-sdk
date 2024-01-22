@@ -91,18 +91,18 @@ static NSString *kSDKversionNumber = @"19";
        KeyAccountIDFetchingCampaign                 : _accountID,
        KeyDeviceNameFetchingCampaign                : VWODevice.deviceName,
        KeyAppKeyFetchingCampaign                    : _appKey,
-       KeyCampaignVariationPairsFetchingCampaign    : VWOUserDefaults.campaignVariationPairs.toString,
+       KeyCampaignVariationPairsFetchingCampaign    : VWOUserDefaults.campaignVariationPairs.vwo_toString,
        KeyIOSVersionFetchingCampaign                : VWODevice.iOSVersion,
        KeyRandomNumberFetchingCampaign              : [self randomNumber],
        KeyUUIDFetchingCampaign                      : VWOUserDefaults.UUID,
        KeySDKversionNumberFetchingCampaign          : kSDKversionNumber
      } mutableCopy];
     if (userID) {
-        NSString * uHash = userID.generateMD5;
+        NSString * uHash = userID.vwo_generateMD5;
         paramDict[keyUHashFetchingCampaign] = uHash;
         [VWOUserDefaults updateUUID:uHash];
     }
-    components.queryItems = [paramDict toQueryItems];
+    components.queryItems = [paramDict vwo_toQueryItems];
     return components.URL;
 }
 
@@ -124,12 +124,12 @@ static NSString *kSDKversionNumber = @"19";
        KeySessionCount          : [NSString stringWithFormat:@"%lu", (unsigned long)VWOUserDefaults.sessionCount],
        KeyRandom                : [self randomNumber],
        KeyTimeStamp             : [NSString stringWithFormat:@"%lu", (unsigned long)date.timeIntervalSince1970],
-       KeyExtraData             : [self extraParametersWithDate:date].toString
+       KeyExtraData             : [self extraParametersWithDate:date].vwo_toString
       } mutableCopy];
     if (config.customDimension != nil) {
         paramDict[KeyCustomDimension] = config.customDimension;
     }
-    components.queryItems = [paramDict toQueryItems];
+    components.queryItems = [paramDict vwo_toQueryItems];
     return components.URL;
 }
 
@@ -154,8 +154,8 @@ static NSString *kSDKversionNumber = @"19";
        Random               : [self randomNumber]
      } mutableCopy];
     
-    components.queryItems = [paramDict toQueryItems];
-    
+    components.queryItems = [paramDict vwo_toQueryItems];
+
     NSDictionary *EventArchDict = @{
         D: @{
             MessageID: [NSString stringWithFormat:@"%@-%lu", VWOUserDefaults.UUID, currentTimeInMilli],
@@ -200,13 +200,13 @@ static NSString *kSDKversionNumber = @"19";
     paramDict[KeySessionCount]          = [NSString stringWithFormat:@"%lu", (unsigned long)VWOUserDefaults.sessionCount];
     paramDict[KeyRandom]                = [self randomNumber];
     paramDict[KeyTimeStamp]             = [NSString stringWithFormat:@"%f", date.timeIntervalSince1970];
-    paramDict[KeyExtraData]             = [self extraParametersWithDate:date].toString;
+    paramDict[KeyExtraData]             = [self extraParametersWithDate:date].vwo_toString;
     paramDict[KeyGoalID]                = [NSString stringWithFormat:@"%d", goal.iD];
 
     if (goalValue != nil) {
         paramDict[KeyGoalRevenue] = [NSString stringWithFormat:@"%@", goalValue];
     }
-    components.queryItems = [paramDict toQueryItems];
+    components.queryItems = [paramDict vwo_toQueryItems];
     return components.URL;
 }
 
@@ -232,8 +232,8 @@ static NSString *kSDKversionNumber = @"19";
        Random               : [self randomNumber]
      } mutableCopy];
     
-    components.queryItems = [paramDict toQueryItems];
-    
+    components.queryItems = [paramDict vwo_toQueryItems];
+
     NSString *goalID = [NSString stringWithFormat:@"g_%d", goal.iD];
     NSArray *goalIDArray = @[goalID];
     NSDictionary *VWOMetaDict = @{
@@ -292,7 +292,7 @@ static NSString *kSDKversionNumber = @"19";
     paramDict[KeyTimeStamp]             = [NSString stringWithFormat:@"%f", date.timeIntervalSince1970];
     paramDict[KeyCustomDimension]       = [NSString stringWithFormat:@"{\"u\":{\"%@\":\"%@\"}}", customDimensionKey, customDimensionValue];
 
-    components.queryItems = [paramDict toQueryItems];
+    components.queryItems = [paramDict vwo_toQueryItems];
     return components.URL;
 }
 
@@ -317,8 +317,8 @@ static NSString *kSDKversionNumber = @"19";
        Random               : [self randomNumber]
      } mutableCopy];
     
-    components.queryItems = [paramDict toQueryItems];
-    
+    components.queryItems = [paramDict vwo_toQueryItems];
+
     NSDictionary *EventArchDict = @{
         D: @{
             MessageID: [NSString stringWithFormat:@"%@-%lu", VWOUserDefaults.UUID, currentTimeInMilli],
@@ -368,8 +368,8 @@ static NSString *kSDKversionNumber = @"19";
     paramDict[KeyRandom]                = [self randomNumber];
     paramDict[KeyTimeStamp]             = [NSString stringWithFormat:@"%f", date.timeIntervalSince1970];
     
-    components.queryItems = [paramDict toQueryItems];
-    
+    components.queryItems = [paramDict vwo_toQueryItems];
+
     NSString *urlString = [components.URL absoluteString];
     [VWOUserDefaults updateNetworkHTTPMethodTypeData:urlString HTTPMethodType: @"POST"];
     
@@ -413,8 +413,8 @@ static NSString *kSDKversionNumber = @"19";
        Random               : [self randomNumber]
      } mutableCopy];
     
-    components.queryItems = [paramDict toQueryItems];
-    
+    components.queryItems = [paramDict vwo_toQueryItems];
+
     NSDictionary *EventArchDict = @{
         D: @{
             MessageID: [NSString stringWithFormat:@"%@-%lu", VWOUserDefaults.UUID, currentTimeInMilli],

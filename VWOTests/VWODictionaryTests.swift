@@ -24,19 +24,19 @@ class VWODictionaryTests: XCTestCase {
     }
 
     func testToString() {
-        XCTAssertEqual((["a" : 1, "b" : 2, "c" : 3] as NSDictionary).toString()!,
+        XCTAssertEqual((["a" : 1, "b" : 2, "c" : 3] as NSDictionary).vwo_toString()!,
                        "{\"a\":1,\"b\":2,\"c\":3}")
-        XCTAssertEqual((["name" : "Kaunteya", "details" : ["age" : 1, "gender" : "male"]] as NSDictionary).toString()!,
+        XCTAssertEqual((["name" : "Kaunteya", "details" : ["age" : 1, "gender" : "male"]] as NSDictionary).vwo_toString()!,
                        "{\"name\":\"Kaunteya\",\"details\":{\"age\":1,\"gender\":\"male\"}}")
     }
 
     func testToQueryItem() {
-        XCTAssertEqual((["name" : "Kaunteya", "age" : "1", "gender" : "male"] as NSDictionary).toQueryItems(),
+        XCTAssertEqual((["name" : "Kaunteya", "age" : "1", "gender" : "male"] as NSDictionary).vwo_toQueryItems(),
                        [URLQueryItem(name: "name", value: "Kaunteya"),
                         URLQueryItem(name: "age", value: "1"),
                         URLQueryItem(name: "gender", value: "male")]
         )
-        XCTAssertEqual((["name" : "Kaunteya"] as NSDictionary).toQueryItems(),
+        XCTAssertEqual((["name" : "Kaunteya"] as NSDictionary).vwo_toQueryItems(),
                        [URLQueryItem(name: "name", value: "Kaunteya")])
     }
 }

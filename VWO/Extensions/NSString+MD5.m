@@ -10,7 +10,7 @@
 
 @implementation NSString (MD5)
 
-- (NSString *)generateMD5{
+- (NSString *)vwo_generateMD5{
     const char *ptr = [self UTF8String];
     unsigned char md5Buffer[CC_MD5_DIGEST_LENGTH];
 

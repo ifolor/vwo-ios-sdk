@@ -25,9 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSArray<NSString *> *)keysMissingFrom:(NSArray<NSString *> *)mustHaveKeys;
 
-- (nullable NSString *)toString;
+- (nullable NSString *)vwo_toString;
 
-- (NSArray<NSURLQueryItem *> *)toQueryItems;
+- (NSArray<NSURLQueryItem *> *)vwo_toQueryItems;
 
 @end
 

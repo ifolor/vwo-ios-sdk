@@ -16,7 +16,7 @@
     return mustHaveKeysMutable;
 }
 
-- (NSString *)toString {
+- (NSString *)vwo_toString {
     NSError *error;
     NSData *currentData = [NSJSONSerialization dataWithJSONObject:self
                                                           options:kNilOptions
@@ -27,7 +27,7 @@
     return nil;
 }
 
-- (NSArray<NSURLQueryItem *> *)toQueryItems {
+- (NSArray<NSURLQueryItem *> *)vwo_toQueryItems {
     NSMutableArray<NSURLQueryItem *> *queryItems = [NSMutableArray new];
     for (NSString *key in self) {
         NSAssert([self[key] isKindOfClass:[NSString class]], @"Query item can only have string");

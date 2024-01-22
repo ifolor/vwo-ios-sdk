@@ -8,5 +8,5 @@
 #import <Foundation/Foundation.h>
 
 @interface NSString (MD5)
-    @property (readonly, copy) NSString *generateMD5;
+    @property (readonly, copy) NSString *vwo_generateMD5;
 @end
