@@ -515,4 +515,31 @@ static NSString *const kUserDefaultsKey = @"vwo.09cde70ba7a94aff9d843b1b846a79a7
     }
 }
 
+#pragma mark - Ifolor Additions
+
+- (nullable VWOCampaign *)campaignForKey:(NSString *)key {
+    for (VWOCampaign *candidate in _campaignList) {
+        if ([candidate.testKey isEqualToString:key]) {
+            return candidate;
+        }
+    }
+    return nil;
+}
+
+- (BOOL)isUserTrackedInCampaign:(NSString *)campaignKey {
+    VWOCampaign *campaign = [self campaignForKey:campaignKey];
+    if (!campaign) {
+        return NO;
+    }
+    
+    return [VWOUserDefaults isTrackingUserForCampaign:campaign];
+}
+
+- (void)flushRequestQueue {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // we simulate a timer fire here
+        [self timerAction];
+    });
+}
+
 @end

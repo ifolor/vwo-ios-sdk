@@ -287,5 +287,10 @@ __deprecated_msg("Use objectForKey:defaultValue instead");
  */
 + (void)pushCustomDimension:(NSMutableDictionary *)customDimensionDictionary NS_SWIFT_NAME(pushCustomDimension(customDimensionDictionary:));
 
+#pragma mark - Ifolor Additions
+
++ (BOOL)isUserTrackedInCampaign:(NSString *)campaignKey;
++ (void)flushRequestQueue;
+
 @end
 NS_ASSUME_NONNULL_END

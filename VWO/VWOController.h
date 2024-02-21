@@ -45,6 +45,11 @@ static NSString *kVWOSDKversion = @"2.18.1";
 - (void)pushCustomDimension:(NSString *) customDimensionKey withCustomDimensionValue:(NSString *) customDimensionValue;
 - (void)pushCustomDimension:(NSMutableDictionary<NSString *, id> *)customDimensionDictionary;
 
+#pragma mark - Ifolor Additions
+
+- (BOOL)isUserTrackedInCampaign:(NSString *)campaignKey;
+- (void)flushRequestQueue;
+
 @end
 
 NS_ASSUME_NONNULL_END

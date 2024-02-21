@@ -289,4 +289,14 @@ NSString * const VWOUserStartedTrackingInCampaignNotification = @"VWOUserStarted
     return kVWOSDKversion;
 }
 
+#pragma mark - Ifolor Additions
+
++ (BOOL)isUserTrackedInCampaign:(NSString *)campaignKey {
+    return [VWOController.shared isUserTrackedInCampaign:campaignKey];
+}
+
++ (void)flushRequestQueue {
+    [VWOController.shared flushRequestQueue];
+}
+
 @end
