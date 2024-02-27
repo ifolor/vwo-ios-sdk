@@ -289,6 +289,7 @@ __deprecated_msg("Use objectForKey:defaultValue instead");
 
 #pragma mark - Ifolor Additions
 
++ (BOOL)hasCampaignForKey:(NSString *)campaignKey;
 + (BOOL)isUserTrackedInCampaign:(NSString *)campaignKey;
 + (void)flushRequestQueue;
 

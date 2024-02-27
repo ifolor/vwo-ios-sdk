@@ -47,6 +47,7 @@ static NSString *kVWOSDKversion = @"2.18.1";
 
 #pragma mark - Ifolor Additions
 
+- (nullable VWOCampaign *)campaignForKey:(NSString *)key;
 - (BOOL)isUserTrackedInCampaign:(NSString *)campaignKey;
 - (void)flushRequestQueue;
 

@@ -291,7 +291,17 @@ NSString * const VWOUserStartedTrackingInCampaignNotification = @"VWOUserStarted
 
 #pragma mark - Ifolor Additions
 
++ (BOOL)hasCampaignForKey:(NSString *)campaignKey {
+    if (campaignKey.length == 0) {
+        return NO;
+    }
+    return ([VWOController.shared campaignForKey:campaignKey] != nil);
+}
+
 + (BOOL)isUserTrackedInCampaign:(NSString *)campaignKey {
+    if (campaignKey.length == 0) {
+        return NO;
+    }
     return [VWOController.shared isUserTrackedInCampaign:campaignKey];
 }
 
