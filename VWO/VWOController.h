@@ -50,6 +50,7 @@ static NSString *kVWOSDKversion = @"2.18.1";
 - (nullable VWOCampaign *)campaignForKey:(NSString *)key;
 - (BOOL)isUserTrackedInCampaign:(NSString *)campaignKey;
 - (void)flushRequestQueue;
+- (BOOL)isGoal:(NSString *)goal markedInCampaign:(NSString *)campaignKey;
 
 @end
 

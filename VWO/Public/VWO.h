@@ -292,6 +292,7 @@ __deprecated_msg("Use objectForKey:defaultValue instead");
 + (BOOL)hasCampaignForKey:(NSString *)campaignKey;
 + (BOOL)isUserTrackedInCampaign:(NSString *)campaignKey;
 + (void)flushRequestQueue;
++ (BOOL)isGoal:(NSString *)goal markedInCampaign:(NSString *)campaignKey;
 
 @end
 NS_ASSUME_NONNULL_END

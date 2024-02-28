@@ -309,4 +309,8 @@ NSString * const VWOUserStartedTrackingInCampaignNotification = @"VWOUserStarted
     [VWOController.shared flushRequestQueue];
 }
 
++ (BOOL)isGoal:(NSString *)goal markedInCampaign:(NSString *)campaignKey {
+    return [VWOController.shared isGoal:goal markedInCampaign:campaignKey];    
+}
+
 @end

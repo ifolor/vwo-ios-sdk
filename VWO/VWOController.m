@@ -542,4 +542,19 @@ static NSString *const kUserDefaultsKey = @"vwo.09cde70ba7a94aff9d843b1b846a79a7
     });
 }
 
+- (BOOL)isGoal:(NSString *)goalIdentifier markedInCampaign:(NSString *)campaignKey {
+    VWOCampaign *campaign = [self campaignForKey:campaignKey];
+    if (!campaign) {
+        return NO;
+    }
+    
+    NSMutableArray <VWOGoal *>*matchedGoals = [campaign goalForIdentifier:goalIdentifier];
+    VWOGoal *goal = matchedGoals.firstObject;
+    if (!goal) {
+        return NO;
+    }
+        
+    return [VWOUserDefaults isGoalMarked:goal inCampaign:campaign];
+}
+
 @end
