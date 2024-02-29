@@ -21,6 +21,14 @@ typedef NS_ENUM(NSInteger, VWOLogLevel) {
     VWOLogLevelNone,
 };
 
+@protocol VWODelegate <NSObject>
+
+- (void)VWODidLaunch;
+- (void)VWODidStartTrackingUserInCampaign:(NSString *)key;
+- (void)VWODidMarkGoal:(NSString *)goal inCampaign:(NSString *)key;
+
+@end
+
 @interface VWO : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -289,10 +297,12 @@ __deprecated_msg("Use objectForKey:defaultValue instead");
 
 #pragma mark - Ifolor Additions
 
+@property (class, atomic, weak) NSObject <VWODelegate> *delegate;
 + (BOOL)hasCampaignForKey:(NSString *)campaignKey;
 + (BOOL)isUserTrackedInCampaign:(NSString *)campaignKey;
 + (void)flushRequestQueue;
 + (BOOL)isGoal:(NSString *)goal markedInCampaign:(NSString *)campaignKey;
+
 
 @end
 NS_ASSUME_NONNULL_END

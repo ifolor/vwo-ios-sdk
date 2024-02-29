@@ -125,6 +125,9 @@ static NSString *const kUserDefaultsKey = @"vwo.09cde70ba7a94aff9d843b1b846a79a7
     if (_campaignList == nil) { return; }
     _initialised = true;
     [self trackUserForAllCampaignsOnLaunch:_campaignList];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.delegate VWODidLaunch];
+    });
 }
 
 - (void)updateAPIKey:(NSString *)apiKey {
@@ -234,6 +237,7 @@ static NSString *const kUserDefaultsKey = @"vwo.09cde70ba7a94aff9d843b1b846a79a7
                 }
                 if ([VWOUserDefaults isTrackingUserForCampaign:campaign]) {
                     [VWOUserDefaults markGoalConversion:matchedGoal inCampaign:campaign];
+                    dispatch_async(dispatch_get_main_queue(), ^{ [self.delegate VWODidMarkGoal:matchedGoal.identifier inCampaign:campaign.testKey]; });
                     
                     NSURL *url = NULL;
                     if((VWOUserDefaults.IsEventArchEnabled != NULL) &&
@@ -444,6 +448,7 @@ static NSString *const kUserDefaultsKey = @"vwo.09cde70ba7a94aff9d843b1b846a79a7
     [pendingURLQueue enqueue:url maxRetry:10 description:description];
 
     [self sendNotificationUserStartedTracking:campaign];
+    dispatch_async(dispatch_get_main_queue(), ^{ [self.delegate VWODidStartTrackingUserInCampaign:campaign.testKey]; });
 }
 
 - (void)pushCustomDimension:(nonnull NSString *)customDimensionKey withCustomDimensionValue:(nonnull NSString *)customDimensionValue {

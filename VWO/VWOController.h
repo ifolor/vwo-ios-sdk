@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "VWOCampaignFetcher.h"
+#import "VWO.h"
 
 @class VWOSegmentEvaluator, VWOUserDefaults;
 
@@ -47,6 +48,7 @@ static NSString *kVWOSDKversion = @"2.18.1";
 
 #pragma mark - Ifolor Additions
 
+@property (atomic, weak) NSObject<VWODelegate> *delegate;
 - (nullable VWOCampaign *)campaignForKey:(NSString *)key;
 - (BOOL)isUserTrackedInCampaign:(NSString *)campaignKey;
 - (void)flushRequestQueue;

@@ -291,6 +291,14 @@ NSString * const VWOUserStartedTrackingInCampaignNotification = @"VWOUserStarted
 
 #pragma mark - Ifolor Additions
 
++ (NSObject <VWODelegate> *)delegate {
+    return VWOController.shared.delegate;
+}
+
++ (void)setDelegate:(NSObject<VWODelegate> *)delegate {
+    VWOController.shared.delegate = delegate;
+}
+
 + (BOOL)hasCampaignForKey:(NSString *)campaignKey {
     if (campaignKey.length == 0) {
         return NO;
